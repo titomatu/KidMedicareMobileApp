@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/favorite_menu2"
+        android:title="@string/label_favorite"
+        android:icon="@drawable/ic_baseline_favorite"
+        android:iconTint="@color/teal_700"
+        app:tint="@color/teal_700"
+        app:showAsAction="always"/>
+
+    <item android:title="Pets">
+        <menu>
+            <item android:id="@+id/favorite_menu"
+                android:title="@string/label_favorite"
+                android:icon="@drawable/ic_baseline_favorite"
+                android:iconTint="@color/teal_700"
+                app:tint="@color/teal_700"
+                app:showAsAction="always"/>
+        </menu>
+    </item>
+    <item android:title="@string/label_settings">
+        <menu>
+            <item android:id="@+id/settings_menu"
+                android:title="@string/label_user_settings"
+                android:icon="@drawable/privacy"/>
+            <item android:id="@+id/profile_menu"
+                android:title="@string/label_profile"
+                android:icon="@drawable/user"/>
+            <item android:id="@+id/password_menu"
+                android:title="@string/label_password"
+                android:icon="@drawable/padlock"/>
+        </menu>
+    </item>
+</menu>
