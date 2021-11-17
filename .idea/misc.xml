@@ -3,9 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable-v24/ic_gender_1.xml" value="0.1421875" />
         <entry key="app/src/main/res/drawable-v24/round_button.xml" value="0.16770833333333332" />
         <entry key="app/src/main/res/drawable-v24/shape_card.xml" value="0.16770833333333332" />
         <entry key="app/src/main/res/drawable-v24/splash_screen.xml" value="0.16770833333333332" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1421875" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1515625" />
         <entry key="app/src/main/res/layout/activity_main_menu.xml" value="0.12864583333333332" />
