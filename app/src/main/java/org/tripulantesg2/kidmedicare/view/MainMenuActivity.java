@@ -1,12 +1,17 @@
 package org.tripulantesg2.kidmedicare.view;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
@@ -24,9 +29,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.tripulantesg2.kidmedicare.databinding.ActivityMainMenuBinding;
 import org.tripulantesg2.kidmedicare.R;
 
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainMenuActivity extends AppCompatActivity {
 
@@ -36,6 +46,7 @@ public class MainMenuActivity extends AppCompatActivity {
 
     //FirebaseFirestore DataBase
     private FirebaseFirestore db;
+    String user_image_url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +107,7 @@ public class MainMenuActivity extends AppCompatActivity {
             final View viewMenuHeader = binding.navView.getHeaderView(0);
             final TextView textViewNombreUsuario = viewMenuHeader.findViewById(R.id.textViewNombreUsuario);
             final TextView textViewCorreoUsuario = viewMenuHeader.findViewById(R.id.textViewCorreoUsuario);
+            final CircleImageView profileImageView = viewMenuHeader.findViewById(R.id.profileImageView);
 
             //Load Data
             //textViewNombreUsuario.setText("Tito Andrés Maturana de la Cruz");
@@ -112,6 +124,17 @@ public class MainMenuActivity extends AppCompatActivity {
                         if (document.exists()) {
                             Log.w(TAG, "=============>>> DocumentSnapshot data: " + document.getData());
                             textViewNombreUsuario.setText(document.getString("name"));
+                            user_image_url = document.getString("image_url");
+
+                            //Load User Profile Image
+                            FirebaseStorage storage = FirebaseStorage.getInstance();
+                            StorageReference gsReference = storage.getReferenceFromUrl(user_image_url);
+                            Log.w(TAG, "=============>>> user_image_url: " + user_image_url);
+                            getDonwloadUrl(gsReference);
+                            //Use Glide to load image
+                            Glide.with(viewMenuHeader)
+                                    .load(currentUser.getPhotoUrl())
+                                    .into(profileImageView);
                         } else {
                             Log.w(TAG, "=============>>> No such document");
                         }
@@ -124,5 +147,38 @@ public class MainMenuActivity extends AppCompatActivity {
         } catch(Exception exc){
             Log.w(TAG, "=================> " + exc.getMessage());
         }
+    }
+
+    private void getDonwloadUrl(StorageReference storage){
+        storage.getDownloadUrl()
+                .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Log.w(TAG, "=================> " + uri);
+                        setUserProfileUrl(uri);
+                    }
+                });
+    }
+
+    private void setUserProfileUrl(Uri uri){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        UserProfileChangeRequest request = new UserProfileChangeRequest.Builder()
+                .setPhotoUri(uri)
+                .build();
+
+        user.updateProfile(request)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Log.w(TAG, "=============>>> user profile image loaded");
+                    }
+                })
+        .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.w(TAG, "=============>>> user profile image not loaded");
+            }
+        });
     }
 }
