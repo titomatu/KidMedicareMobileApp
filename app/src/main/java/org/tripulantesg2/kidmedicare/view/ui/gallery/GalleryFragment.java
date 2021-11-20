@@ -12,6 +12,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import org.tripulantesg2.kidmedicare.R;
 import org.tripulantesg2.kidmedicare.databinding.FragmentGalleryBinding;
 
@@ -20,8 +23,13 @@ public class GalleryFragment extends Fragment {
     private GalleryViewModel galleryViewModel;
     private FragmentGalleryBinding binding;
 
+    private DatabaseReference mDatabase;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
         galleryViewModel =
                 new ViewModelProvider(this).get(GalleryViewModel.class);
 
