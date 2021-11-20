@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "323701069938",
+    "project_id": "kidmedicare-app",
+    "storage_bucket": "kidmedicare-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:323701069938:android:ac4826e8b05297dda90aeb",
+        "android_client_info": {
+          "package_name": "org.tripulantesg2.kidmedicare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "323701069938-834a2uaqtu6eirq64copuhbrf8tu3rib.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOGAMNtQwWmdZoX3NFqB1Tk1_SnSBC4sc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "323701069938-834a2uaqtu6eirq64copuhbrf8tu3rib.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
