@@ -1,8 +1,10 @@
 package org.tripulantesg2.kidmedicare.view;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.widget.ImageView;
@@ -26,6 +28,7 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.tripulantesg2.kidmedicare.MainActivity;
 import org.tripulantesg2.kidmedicare.databinding.ActivityMainMenuBinding;
 import org.tripulantesg2.kidmedicare.R;
 
@@ -46,6 +49,7 @@ public class MainMenuActivity extends AppCompatActivity {
 
     //FirebaseFirestore DataBase
     private FirebaseFirestore db;
+    private FirebaseAuth mAuth;
     String user_image_url;
 
     @Override
@@ -54,8 +58,8 @@ public class MainMenuActivity extends AppCompatActivity {
 
         binding = ActivityMainMenuBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
         setSupportActionBar(binding.appBarMainMenu.toolbar);
+
         binding.appBarMainMenu.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,6 +78,8 @@ public class MainMenuActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main_menu);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        mAuth = FirebaseAuth.getInstance();
     }
 
     @Override
@@ -91,6 +97,22 @@ public class MainMenuActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()){
+            case R.id.action_logout:
+                mAuth.signOut();
+
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
+
+                Log.w(TAG, "======== logout");
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
         loadData();
@@ -98,7 +120,7 @@ public class MainMenuActivity extends AppCompatActivity {
 
     private void loadData() {
         try {
-            FirebaseAuth mAuth = FirebaseAuth.getInstance();
+            mAuth = FirebaseAuth.getInstance();
             FirebaseUser currentUser = mAuth.getCurrentUser();
             Log.w(TAG, "=================> info del usuario logueado: " + currentUser.getEmail());
 
