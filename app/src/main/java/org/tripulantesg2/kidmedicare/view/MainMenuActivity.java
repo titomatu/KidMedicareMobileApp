@@ -123,7 +123,6 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
         try {
             mAuth = FirebaseAuth.getInstance();
             FirebaseUser currentUser = mAuth.getCurrentUser();
-            Log.w(TAG, "=================> info del usuario logueado: " + currentUser.getEmail());
 
             db = FirebaseFirestore.getInstance();
 
@@ -136,8 +135,6 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
             //textViewNombreUsuario.setText("Tito Andrés Maturana de la Cruz");
             textViewCorreoUsuario.setText(currentUser.getEmail());
 
-            Log.w(TAG, "=================> uid: " + currentUser.getUid());
-
             DocumentReference docRef = db.collection("user_info").document(currentUser.getUid());
             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
@@ -145,14 +142,12 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
-                            Log.w(TAG, "=============>>> DocumentSnapshot data: " + document.getData());
                             textViewNombreUsuario.setText(document.getString("name"));
                             user_image_url = document.getString("image_url");
 
                             //Load User Profile Image
                             FirebaseStorage storage = FirebaseStorage.getInstance();
                             StorageReference gsReference = storage.getReferenceFromUrl(user_image_url);
-                            Log.w(TAG, "=============>>> user_image_url: " + user_image_url);
                             getDonwloadUrl(gsReference);
                             //Use Glide to load image
                             Glide.with(viewMenuHeader)
