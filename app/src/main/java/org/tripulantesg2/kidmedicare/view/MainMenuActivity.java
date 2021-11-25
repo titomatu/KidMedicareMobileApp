@@ -132,7 +132,6 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
             final CircleImageView profileImageView = viewMenuHeader.findViewById(R.id.profileImageView);
 
             //Load Data
-            //textViewNombreUsuario.setText("Tito Andrés Maturana de la Cruz");
             textViewCorreoUsuario.setText(currentUser.getEmail());
 
             DocumentReference docRef = db.collection("user_info").document(currentUser.getUid());
