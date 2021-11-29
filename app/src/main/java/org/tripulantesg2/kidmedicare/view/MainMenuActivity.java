@@ -21,7 +21,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -31,6 +34,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.tripulantesg2.kidmedicare.MainActivity;
 import org.tripulantesg2.kidmedicare.databinding.ActivityMainMenuBinding;
 import org.tripulantesg2.kidmedicare.R;
+import org.tripulantesg2.kidmedicare.view.ui.home.HomeFragment;
 
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.DocumentReference;
@@ -41,10 +45,11 @@ import com.google.firebase.storage.StorageReference;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MainMenuActivity extends AppCompatActivity {
+public class MainMenuActivity extends AppCompatActivity implements View.OnClickListener {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainMenuBinding binding;
+    private NavController navController;
     private static final String TAG = "tester";
 
     //FirebaseFirestore DataBase
@@ -60,13 +65,7 @@ public class MainMenuActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         setSupportActionBar(binding.appBarMainMenu.toolbar);
 
-        binding.appBarMainMenu.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main_menu);
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
         // Passing each menu ID as a set of Ids because each
@@ -75,9 +74,11 @@ public class MainMenuActivity extends AppCompatActivity {
                 R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
                 .setOpenableLayout(drawer)
                 .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main_menu);
+        //NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main_menu);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        binding.appBarMainMenu.fab.setOnClickListener(this::onClick);
 
         mAuth = FirebaseAuth.getInstance();
     }
@@ -122,7 +123,6 @@ public class MainMenuActivity extends AppCompatActivity {
         try {
             mAuth = FirebaseAuth.getInstance();
             FirebaseUser currentUser = mAuth.getCurrentUser();
-            Log.w(TAG, "=================> info del usuario logueado: " + currentUser.getEmail());
 
             db = FirebaseFirestore.getInstance();
 
@@ -132,10 +132,7 @@ public class MainMenuActivity extends AppCompatActivity {
             final CircleImageView profileImageView = viewMenuHeader.findViewById(R.id.profileImageView);
 
             //Load Data
-            //textViewNombreUsuario.setText("Tito Andrés Maturana de la Cruz");
             textViewCorreoUsuario.setText(currentUser.getEmail());
-
-            Log.w(TAG, "=================> uid: " + currentUser.getUid());
 
             DocumentReference docRef = db.collection("user_info").document(currentUser.getUid());
             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -144,14 +141,12 @@ public class MainMenuActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
-                            Log.w(TAG, "=============>>> DocumentSnapshot data: " + document.getData());
                             textViewNombreUsuario.setText(document.getString("name"));
                             user_image_url = document.getString("image_url");
 
                             //Load User Profile Image
                             FirebaseStorage storage = FirebaseStorage.getInstance();
                             StorageReference gsReference = storage.getReferenceFromUrl(user_image_url);
-                            Log.w(TAG, "=============>>> user_image_url: " + user_image_url);
                             getDonwloadUrl(gsReference);
                             //Use Glide to load image
                             Glide.with(viewMenuHeader)
@@ -202,5 +197,10 @@ public class MainMenuActivity extends AppCompatActivity {
                 Log.w(TAG, "=============>>> user profile image not loaded");
             }
         });
+    }
+
+    @Override
+    public void onClick(View v) {
+        navController.navigate(R.id.nav_home);
     }
 }

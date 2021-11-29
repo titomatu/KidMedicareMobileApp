@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.ui.slideshow.SlideshowFragment">
+    tools:context=".view.ui.slideshow.SlideshowFragment"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/text_slideshow"
@@ -19,4 +20,48 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profileImageViewData"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:src="@mipmap/ic_launcher_round"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:onClick="handleImageClick"
+        />
+
+    <TextView
+        android:id="@+id/textViewNombreUsuarioData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/poppins_family"
+        android:textFontWeight="200"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:text="@string/nav_header_title" />
+
+    <TextView
+        android:id="@+id/textViewCorreoUsuarioData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/poppins_family"
+        android:textFontWeight="200"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:text="@string/nav_header_subtitle" />
+
+    <TextView
+        android:id="@+id/textCreationDateData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/poppins_family"
+        android:textFontWeight="200"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:text="@string/nav_header_subtitle" />
+</LinearLayout>
